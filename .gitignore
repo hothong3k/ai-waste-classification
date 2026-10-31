@@ -1,0 +1,48 @@
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Data files (too large for Git)
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Model weights (too large for Git)
+models/*.pth
+models/*.h5
+models/*.onnx
+!models/.gitkeep
+
+# Logs
+*.log
+runs/
+wandb/
+
+# Distribution
+dist/
+build/
+*.egg-info/
+
+#Documents for AI
+docs/

@@ -1,0 +1,87 @@
+# Project Configuration
+# =====================
+# Global settings for reproducibility and hyperparameters
+
+# --- Reproducibility ---
+seed: 42
+
+# --- Data Paths ---
+data:
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+  splits_dir: "data/splits"
+  image_size: 224          # Resize all images to 224x224
+  num_classes: 6
+  class_names:
+    - "plastic"
+    - "paper"
+    - "metal"
+    - "glass"
+    - "organic"
+    - "styrofoam"
+
+# --- Data Split Ratios ---
+split:
+  train: 0.70
+  val: 0.15
+  test: 0.15
+
+# --- Data Augmentation ---
+augmentation:
+  horizontal_flip: true
+  vertical_flip: false
+  rotation_degrees: 15
+  color_jitter:
+    brightness: 0.2
+    contrast: 0.2
+    saturation: 0.2
+    hue: 0.1
+  normalize:
+    mean: [0.485, 0.456, 0.406]   # ImageNet mean
+    std: [0.229, 0.224, 0.225]    # ImageNet std
+
+# --- Baseline CNN Training ---
+baseline:
+  architecture: "BaselineCNN"
+  epochs: 30
+  batch_size: 32
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  optimizer: "adam"
+  scheduler: "step_lr"
+  scheduler_step_size: 10
+  scheduler_gamma: 0.1
+
+# --- Transfer Learning Training ---
+transfer:
+  architecture: "MobileNetV2"    # Options: MobileNetV2, ResNet50
+  pretrained: true
+  freeze_backbone: true          # Freeze early layers, train classifier head
+  unfreeze_after_epochs: 5       # Unfreeze backbone for fine-tuning after N epochs
+  epochs: 25
+  batch_size: 32
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  optimizer: "adam"
+  scheduler: "cosine"
+
+# --- Evaluation ---
+evaluation:
+  metrics:
+    - "accuracy"
+    - "f1_score"
+    - "auc"
+    - "confusion_matrix"
+  save_dir: "reports/figures"
+
+# --- Model Checkpoints ---
+checkpoint:
+  save_dir: "models"
+  save_best_only: true
+  monitor: "val_f1"
+
+# --- Demo App ---
+app:
+  model_path: "models/best_model.pth"
+  device: "cpu"                  # Use "cuda" if GPU available
+  gradio_port: 7860
